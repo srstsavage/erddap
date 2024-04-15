@@ -24,10 +24,10 @@ class WatchDirectoryTests {
     StringArray contexts = new StringArray();
     String testDataDir = Path.of(WatchDirectoryTests.class.getResource("/data/").toURI()).toString();
     String sourceDir = testDataDir;
-    String watchDir = testDataDir + "\\watchService";
-    String subDirNS = testDataDir + "\\watchService\\watchSub";
-    String file1 = "\\columnarAsciiWithComments.txt";
-    String file2 = "\\csvAscii.txt";
+    String watchDir = testDataDir + "/watchService";
+    String subDirNS = testDataDir + "/watchService/watchSub";
+    String file1 = "/columnarAsciiWithComments.txt";
+    String file2 = "/csvAscii.txt";
     String results;
     int n;
     // On Bob's M4700, even 2000 isn't sufficient to reliably catch all events
@@ -123,11 +123,15 @@ class WatchDirectoryTests {
           results.equals(WatchDirectory.DELETE + " " + watchDir + file1) ||
               results.equals(WatchDirectory.MODIFY + " " + watchDir + file1) ||
               results.equals(WatchDirectory.DELETE + " " + subDirNS + file2) ||
-              results.equals(WatchDirectory.MODIFY + " " + subDirNS + file2) ||
-              results.equals(WatchDirectory.MODIFY + " " + subDirNS),
+              results.equals(WatchDirectory.MODIFY + " " + subDirNS + file2),
           "");
     }
-    Test.ensureBetween(n, 3, 5, ""); // sometimes the dir event isn't caught
+    // on linux modify events are not created during this delete
+    // also a subdir deletion was previously checked for here,
+    // but RegexFilenameFilter.regexDelete explicitly excludes directories
+    // from matching (directoriesToo is false), so only two events are possible here
+    // (the two file DELETEs)
+    Test.ensureBetween(n, 2, 4, "");
 
     // *** test creating a huge number
     // This is allowed on Windows. It doesn't appear to have max number.

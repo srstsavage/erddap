@@ -64,7 +64,7 @@ class EDDGridFromAudioFilesTests {
         "    <defaultDataQuery>&amp;time=min(time)</defaultDataQuery>\n" +
         "    <reloadEveryNMinutes>1440</reloadEveryNMinutes>\n" +
         "    <updateEveryNMillis>10000</updateEveryNMillis>\n" +
-        "    <fileDir>" + dir + "\\</fileDir>\n" +
+        "    <fileDir>" + File2.addSlash(dir) + "</fileDir>\n" +
         "    <fileNameRegex>aco_acoustic\\.[0-9]{8}_[0-9]{6}\\.wav</fileNameRegex>\n" +
         "    <recursive>true</recursive>\n" +
         "    <pathRegex>.*</pathRegex>\n" +
@@ -195,7 +195,7 @@ class EDDGridFromAudioFilesTests {
         "    <defaultDataQuery>&amp;time=min(time)</defaultDataQuery>\n" +
         "    <reloadEveryNMinutes>1440</reloadEveryNMinutes>\n" +
         "    <updateEveryNMillis>10000</updateEveryNMillis>\n" +
-        "    <fileDir>" + dir + "\\</fileDir>\n" +
+        "    <fileDir>" + File2.addSlash(dir) + "</fileDir>\n" +
         "    <fileNameRegex>aco_acoustic\\.[0-9]{8}_[0-9]{6}\\.wav</fileNameRegex>\n" +
         "    <recursive>true</recursive>\n" +
         "    <pathRegex>.*</pathRegex>\n" +

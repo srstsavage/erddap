@@ -165,6 +165,8 @@ class EDDGridFromNcFilesTests {
     } catch (Exception e) {
       Test.knownProblem("2022-07-07 This fails with switch to netcdf v5.5.3 and modules (not netcdfAll). " +
           "I reported to netcdf-java people.", e);
+        // Bob's 2022 email to netcdf-java mailing list here (seems to be unanswered):
+        // https://www.unidata.ucar.edu/mailing_lists/archives/netcdf-java/2022/msg00026.html
     }
   }
 
