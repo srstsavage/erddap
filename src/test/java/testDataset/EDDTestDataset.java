@@ -8176,7 +8176,7 @@ public class EDDTestDataset {
             "        </addAttributes>\n" + //
             "    </dataVariable>\n" + //
             "    <dataVariable>\n" + //
-            "        <sourceName>***pathName,.*/([a-zA-Z]*)/NDBC_.*_met\\.nc,1</sourceName>\n" + //
+            "        <sourceName>***pathName,.*[/\\\\]([a-zA-Z]*)[/\\\\]NDBC_.*_met\\.nc,1</sourceName>\n" + //
             "        <destinationName>parentDir</destinationName>\n" + //
             "        <dataType>String</dataType>\n" + //
             "        <addAttributes>\n" + //
