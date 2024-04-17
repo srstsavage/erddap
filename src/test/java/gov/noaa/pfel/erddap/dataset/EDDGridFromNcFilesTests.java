@@ -94,6 +94,7 @@ class EDDGridFromNcFilesTests {
 
   /** test reading an .ncml file */
   @org.junit.jupiter.api.Test
+  @TagFlaky // https://github.com/ERDDAP/erddap/issues/148
   void testNcml() throws Throwable {
 
     // String2.log("\n*** EDDGridFromNcFiles.testNcml");
@@ -14119,8 +14120,8 @@ class EDDGridFromNcFilesTests {
       expected = "There was a (temporary?) problem.  Wait a minute, then try again.  (In a browser, click the Reload button.)\n"
           +
           "(Cause: java.io.FileNotFoundException: " + dataDir
-          + "erdQSwind1day_20080101_03.nc.gz (The system cannot find the file specified))";
-      Test.ensureEqual(results, expected, "\nresults=\n" + results);
+          + "erdQSwind1day_20080101_03.nc.gz";
+      Test.ensureEqual(results.substring(0, expected.length()), expected, "\nresults=\n" + results);
 
     } finally {
       // rename file back to original

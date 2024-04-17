@@ -23517,7 +23517,7 @@ public class EDDTestDataset {
             "    <accessibleViaWMS>false</accessibleViaWMS>\n" + //
             "    <updateEveryNMillis>10000</updateEveryNMillis>\n" + //
             "    <fileDir>"
-            + Path.of(EDDTestDataset.class.getResource("/largeSatellite/TestGridNThreads/").toURI()).toString()
+            + Path.of(EDDTestDataset.class.getResource("/largeSatellite/testGridNThreads/").toURI()).toString()
             + "</fileDir>\n" + //
             "    <recursive>true</recursive>\n" + //
             "    <fileNameRegex>.*_taux\\.nc(|.gz)</fileNameRegex>\n" + //
