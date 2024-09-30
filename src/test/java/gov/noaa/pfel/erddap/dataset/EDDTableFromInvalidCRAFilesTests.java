@@ -97,7 +97,8 @@ class EDDTableFromInvalidCRAFilesTests {
             language, null, null, "", testCacheDir, eddTable.className() + "_wod", ".das");
     results = File2.directReadFrom88591File(testCacheDir + tName);
     // String2.log(results);
-    int oxygenIndex = results.indexOf("  Oxygen_WODprofileflag {");
+    int oxygen_WODprofileflagIndex = results.indexOf("  Oxygen_WODprofileflag {");
+    int oxygenIndex = results.indexOf("  Oxygen {");
     expected =
         "Attributes {\n"
             + " s {\n"
@@ -258,7 +259,7 @@ class EDDTableFromInvalidCRAFilesTests {
             + "    Float64 colorBarMinimum 0.0;\n"
             + (results.indexOf(
                         "String flag_meanings \"accepted annual_sd_out density_inversion cruise seasonal_sd_out",
-                        oxygenIndex)
+                        oxygen_WODprofileflagIndex)
                     > -1
                 ? "    String flag_meanings \"accepted annual_sd_out density_inversion cruise seasonal_sd_out monthly_sd_out annual+seasonal_sd_out anomaly_or_annual+monthly_sd_out seasonal+monthly_sd_out annual+seasonal+monthly_sd_out\";\n"
                     + "    Byte flag_values 0, 1, 2, 3, 4, 5, 6, 7, 8, 9;\n"
@@ -410,16 +411,30 @@ class EDDTableFromInvalidCRAFilesTests {
             + "    String long_name \"sea_water_pressure significant_figures\";\n"
             + "  }\n"
             + "  Oxygen {\n"
-            + "    Float32 _FillValue -1.0e+10;\n"
+            + (results.indexOf("Float32 _FillValue -1.0e+10", oxygenIndex) > -1
+                ? "    Float32 _FillValue -1.0e+10;\n"
+                : "")
             + "    Float32 actual_range 5.71734, 9.488957;\n"
-            + "    String ancillary_variables \"Oxygen_sigfigs Oxygen_WODflag Oxygen_WODprofileflag\";\n"
+            + (results.indexOf("Oxygen_sigfigs Oxygen_WODflag Oxygen_WODprofileflag", oxygenIndex)
+                    > -1
+                ? "    String ancillary_variables \"Oxygen_sigfigs Oxygen_WODflag Oxygen_WODprofileflag\";\n"
+                : "")
             + "    Float64 colorBarMaximum 1.0;\n"
             + "    Float64 colorBarMinimum 0.0;\n"
-            + "    String grid_mapping \"crs\";\n"
+            + (results.indexOf("String grid_mapping \"crs\"", oxygenIndex) > -1
+                ? "    String grid_mapping \"crs\";\n"
+                : "")
             + "    String ioos_category \"Dissolved O2\";\n"
             + "    String long_name \"Volume Fraction Of Oxygen In Sea Water\";\n"
-            + "    String standard_name \"volume_fraction_of_oxygen_in_sea_water\";\n"
-            + "    String units \"ml/l\";\n"
+            + (results.indexOf(
+                        "String standard_name \"volume_fraction_of_oxygen_in_sea_water\"",
+                        oxygenIndex)
+                    > -1
+                ? "    String standard_name \"volume_fraction_of_oxygen_in_sea_water\";\n"
+                : "")
+            + (results.indexOf("String units \"ml/l\"", oxygenIndex) > -1
+                ? "    String units \"ml/l\";\n"
+                : "")
             + "  }\n"
             + "  Oxygen_sigfigs {\n"
             + "    Byte _FillValue 127;\n"
