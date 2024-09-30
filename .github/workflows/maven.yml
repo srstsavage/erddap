@@ -2,7 +2,7 @@ name: Build and test ERDDAP
 
 on:
   push:
-    branches: [ "main" ]
+    branches: [ "main", "gha-test" ]
   pull_request:
     branches: [ "main" ]
 
@@ -19,10 +19,13 @@ jobs:
         cache: maven
     - name: Build with Maven
       run: >
+        MAVEN_DEUBG_OPTS="-agentlib:jdwp=transport=dt_socket,server=y,suspend=y,address=*:8000"
         mvn --batch-mode
+        -DforkCount=0
         -Dmaven.test.redirectTestOutputToFile=true
         -Ddownload.cache.skip=true
         clean test
 
+        #-Dtest=EDDTableFromNCFilesTest#testOrderByMean2
     - name: Update dependency graph
       uses: advanced-security/maven-dependency-submission-action@v4
