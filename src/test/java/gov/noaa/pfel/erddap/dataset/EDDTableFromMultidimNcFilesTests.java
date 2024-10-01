@@ -2694,28 +2694,9 @@ class EDDTableFromMultidimNcFilesTests {
                 ? "    String DM_indicator \"R\";\n"
                 : "")
             + "    String ioos_category \"Temperature\";\n"
-            + (results.indexOf("sea water temperature in-situ ITS-90 scale") > -1
-                ? "    String long_name \"sea water temperature in-situ ITS-90 scale\";\n"
-                : "    String long_name \"Sea temperature\";\n")
-            + (results.indexOf("Float32 precision 0.0") > -1 ? "    Float32 precision 0.0;\n" : "")
-            + (results.indexOf("Byte QC_procedure 1") > -1 ? "    Byte QC_procedure 1;\n" : "")
-            + (results.indexOf("Float32 resolution 0.001") > -1
-                ? "    Float32 resolution 0.001;\n"
-                : "")
-            + (results.indexOf("Float32 sensor_depth 0.0") > -1
-                ? "    Float32 sensor_depth 0.0;\n"
-                : "")
+            + "    String long_name \"Sea temperature\";\n"
             + "    String standard_name \"sea_water_temperature\";\n"
-            + (results.indexOf("Float32 uncertainty 0.01") > -1
-                ? "    Float32 uncertainty 0.01;\n"
-                : "")
             + "    String units \"degree_C\";\n"
-            + (results.indexOf("Float32 valid_max 40.0") > -1
-                ? "    Float32 valid_max 40.0;\n"
-                : "")
-            + (results.indexOf("Float32 valid_min -2.0") > -1
-                ? "    Float32 valid_min -2.0;\n"
-                : "")
             + "  }\n"
             + "  TEMP_QC {\n"
             + "    Byte _FillValue 127;\n"
