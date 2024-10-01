@@ -163,9 +163,6 @@ class EDDGridCopyTests {
             + "    String Conventions \"COARDS, CF-1.6, ACDD-1.3\";\n"
             + "    String creator_email \"erd.data@noaa.gov\";\n"
             + "    String creator_name \"NOAA CoastWatch, West Coast Node\";\n"
-            + (results.indexOf("String creator_type \"group\";") > -1
-                ? "    String creator_type \"group\";\n"
-                : "")
             + "    String creator_url \"https://coastwatch.pfeg.noaa.gov\";\n"
             + "    String date_created \"2008-08-29\";\n"
             + "    String date_issued \"2008-08-29\";\n"

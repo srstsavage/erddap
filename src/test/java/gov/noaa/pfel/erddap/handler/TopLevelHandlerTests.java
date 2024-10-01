@@ -48,7 +48,6 @@ public class TopLevelHandlerTests {
     context.setDatasetIDSet(new HashSet<>());
     context.setDuplicateDatasetIDs(new StringArray());
     context.setWarningsFromLoadDatasets(new StringBuilder());
-    context.setDatasetsThatFailedToLoadSB(new StringBuilder());
     context.settUserHashMap(new HashMap<String, Object[]>());
     context.setMajorLoad(false);
     context.setErddap(new Erddap());
