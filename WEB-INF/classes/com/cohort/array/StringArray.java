@@ -34,6 +34,7 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.Set;
 import java.util.regex.Pattern;
+import org.apache.commons.lang3.Strings;
 import ucar.ma2.StructureData;
 
 /**
@@ -93,8 +94,7 @@ public class StringArray extends PrimitiveArray {
               + ").");
     StringHolder sh = array[index];
     if (sh == null) return true;
-    char car[] = sh.charArray();
-    return car == null || car.length == 0;
+    return sh.isEmpty();
   }
 
   /**
@@ -874,8 +874,7 @@ public class StringArray extends PrimitiveArray {
   public int removeEmptyAtEnd() {
     int last = size;
     while (last > 0) {
-      char[] car = array[last - 1].charArray();
-      if (car == null || car.length == 0) last--;
+      if (array[last - 1].isEmpty()) last--;
       else break;
     }
     removeRange(last, size);
@@ -890,8 +889,7 @@ public class StringArray extends PrimitiveArray {
   public int removeIfNothing() {
     int nGood = 0;
     for (int po = 0; po < size; po++) {
-      char[] car = array[po].charArray();
-      if (car != null && car.length > 0) {
+      if (!array[po].isEmpty()) {
         if (po > nGood) array[nGood] = array[po];
         nGood++;
       }
@@ -1310,12 +1308,8 @@ public class StringArray extends PrimitiveArray {
   @Override
   public int indexOf(final String lookFor, final int startIndex) {
     if (lookFor == null || startIndex >= size) return -1;
-    final char[] lookForc = lookFor.toCharArray();
     for (int i = startIndex; i < size; i++)
-      if (Arrays.equals(
-          array[i].charArray(),
-          lookForc)) // could use == if assume canonical; it's okay if either/both c[] are null
-      return i;
+      if (Strings.CS.equals(array[i].string(), lookFor)) return i;
     return -1;
   }
 
@@ -1362,11 +1356,10 @@ public class StringArray extends PrimitiveArray {
               + ") >= size ("
               + size
               + ").");
-    final char[] lookForc = lookFor.toCharArray();
     for (int i = startIndex; i >= 0; i--)
-      if (Arrays.equals(
-          array[i].charArray(),
-          lookForc)) // could use == if assume canonical. it's okay if either/both b[] are null
+      if (Strings.CS.equals(
+          array[i].string(),
+          lookFor)) // could use == if assume canonical. it's okay if either/both b[] are null
       return i;
     return -1;
   }
@@ -1867,9 +1860,7 @@ public class StringArray extends PrimitiveArray {
   public int maxStringLength() {
     int max = 0;
     for (int i = 0; i < size; i++) {
-      StringHolder sh = getStringHolder(i);
-      int length = (sh == null || sh.charArray() == null) ? 0 : sh.charArray().length;
-      max = Math.max(max, length);
+      max = Math.max(max, getStringHolder(i).length());
     }
     return max;
   }
@@ -1971,12 +1962,11 @@ public class StringArray extends PrimitiveArray {
   @Override
   public int switchFromTo(final String from, final String to) {
     if (from.equals(to)) return 0;
-    final char[] fromc = from.toCharArray();
     final StringHolder tosh = String2.canonicalStringHolder(new StringHolder(to));
     int count = 0;
     for (int i = 0; i < size; i++) {
-      if (Arrays.equals(
-          array[i].charArray(), fromc)) { // could be == if assume all elements are canonical
+      if (Strings.CS.equals(
+          array[i].string(), from)) { // could be == if assume all elements are canonical
         array[i] = tosh;
         count++;
       }
@@ -2532,8 +2522,8 @@ public class StringArray extends PrimitiveArray {
   @Override
   public int firstTie() {
     for (int i = 1; i < size; i++) {
-      if (Arrays.equals(
-          array[i - 1].charArray(), array[i].charArray())) { // either or both can be null
+      if (Strings.CS.equals(
+          array[i - 1].string(), array[i].string())) { // either or both can be null
         return i - 1;
       }
     }
@@ -2694,8 +2684,7 @@ public class StringArray extends PrimitiveArray {
   public int convertIsSomething2() {
     int count = 0;
     for (int i = 0; i < size; i++) {
-      final char[] car = array[i].charArray();
-      if (car == null || (car.length > 0 && !String2.isSomething2(get(i)))) {
+      if (array[i].isEmpty() || !String2.isSomething2(get(i))) {
         array[i] = String2.STRING_HOLDER_ZERO;
         count++;
       }

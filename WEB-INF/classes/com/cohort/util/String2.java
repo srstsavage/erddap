@@ -5706,9 +5706,9 @@ public class String2 {
    * @return a canonical StringHolder with the same characters as sh.
    */
   public static StringHolder canonicalStringHolder(StringHolder sh) {
-    char[] car = sh.charArray();
-    if (car == null) return STRING_HOLDER_NULL;
-    if (car.length == 0) return STRING_HOLDER_ZERO;
+    String str = sh.string();
+    if (str == null) return STRING_HOLDER_NULL;
+    if (str.length() == 0) return STRING_HOLDER_ZERO;
     Map<StringHolder, WeakReference<StringHolder>> tCanonicalStringHolderMap =
         canonicalStringHolderMap[
             Math.abs(sh.hashCode() ^ sh.length())

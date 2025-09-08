@@ -5,7 +5,7 @@
  */
 package com.cohort.util;
 
-import org.apache.commons.lang3.Strings;
+import java.util.Arrays;
 
 /**
  * StringHolder is a thin shell which holds an immutable String in a char[]. It implements with
@@ -13,17 +13,31 @@ import org.apache.commons.lang3.Strings;
  */
 public class StringHolder implements Comparable<StringHolder> {
 
-  // private final char[] car; // may be null
+  private final char[] car; // may be null
   private int hashCode = -1; // this uses extra memory but saves considerable time
   private final String string;
 
+  private static String getString(char[] car) {
+    return car == null ? null : car.length == 0 ? String2.EMPTY_STRING : new String(car);
+  }
   /**
    * A constructor.
    *
    * @param string can be null
    */
   public StringHolder(final String string) {
-    this.string = string == null ? null : string.length() == 0 ? String2.EMPTY_STRING : string;
+    car = string == null ? null : string.toCharArray();
+    this.string = getString(car);
+  }
+
+  /**
+   * A constructor.
+   *
+   * @param tcar can be null
+   */
+  public StringHolder(final char tcar[]) {
+    car = tcar;
+    this.string = getString(car);
   }
 
   /**
@@ -36,8 +50,13 @@ public class StringHolder implements Comparable<StringHolder> {
     // return getString(car);
   }
 
-  public boolean isEmpty() {
-    return string == null || string.length() == 0;
+  /**
+   * This returns the charArray, but don't change the contents!
+   *
+   * @return the charArray
+   */
+  public char[] charArray() {
+    return car;
   }
 
   /**
@@ -46,7 +65,7 @@ public class StringHolder implements Comparable<StringHolder> {
    * @return the number of characters
    */
   public int length() {
-    return string == null ? 0 : string.length();
+    return car == null ? 0 : car.length;
   }
 
   /**
@@ -59,8 +78,7 @@ public class StringHolder implements Comparable<StringHolder> {
     // return Arrays.hashCode(car); //it allows null and returns 0
     // return car == null? 0 : HashDigest.murmur32(car, car.length);
 
-    // if (hashCode == -1) hashCode = string.hArrays.hashCode(car); // it allows null and returns 0
-    if (hashCode == -1) hashCode = string.hashCode();
+    if (hashCode == -1) hashCode = Arrays.hashCode(car); // it allows null and returns 0
     return hashCode;
   }
 
@@ -73,7 +91,7 @@ public class StringHolder implements Comparable<StringHolder> {
   @Override
   public boolean equals(final Object o) {
     if (!(o instanceof StringHolder other)) return false;
-    return Strings.CS.equals(string, other.string); // either or both strings may be null
+    return Arrays.equals(car, other.car); // either or both cars may be null
   }
 
   /**
@@ -85,7 +103,16 @@ public class StringHolder implements Comparable<StringHolder> {
   @Override
   public int compareTo(final StringHolder o) {
     if (o == null) return 1; // see StringComparatorIgnoreCase
-    return Strings.CS.compare(string, o.string);
+    // see String compareTo documentation
+    final char other[] = o.charArray();
+    final int thisSize = car == null ? 0 : car.length;
+    final int otherSize = other == null ? 0 : other.length;
+    final int min = Math.min(thisSize, otherSize);
+    for (int po = 0; po < min; po++) {
+      final int result = car[po] - other[po];
+      if (result != 0) return result;
+    }
+    return thisSize - otherSize;
   }
 
   /**
@@ -96,7 +123,17 @@ public class StringHolder implements Comparable<StringHolder> {
    */
   public int compareToIgnoreCase(final StringHolder o) {
     if (o == null) return 1; // see StringComparatorIgnoreCase
-    return Strings.CI.compare(string, o.string);
+    // see String compareTo documentation
+    final char other[] = o.charArray();
+    final int thisSize = car == null ? 0 : car.length;
+    final int otherSize = other.length;
+    final int min = Math.min(thisSize, otherSize);
+    for (int po = 0; po < min; po++) {
+      final int result = Character.toLowerCase(car[po]) - Character.toLowerCase(other[po]);
+      if (result != 0) return result;
+    }
+    if (thisSize != otherSize) return thisSize - otherSize;
+    return this.compareTo(o); // be nice and sort case-sensitive
   }
 
   /**
